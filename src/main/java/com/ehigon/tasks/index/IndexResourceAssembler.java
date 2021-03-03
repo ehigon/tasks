@@ -15,11 +15,14 @@ import static java.util.Arrays.asList;
 @Component
 public class IndexResourceAssembler {
 
-    @Autowired
-    private EntityLinks entityLinks;
+    private final EntityLinks entityLinks;
 
-    @Autowired
-    private LinkRelationProvider relProvider;
+    private final LinkRelationProvider relProvider;
+
+    public IndexResourceAssembler(EntityLinks entityLinks, LinkRelationProvider relProvider) {
+        this.entityLinks = entityLinks;
+        this.relProvider = relProvider;
+    }
 
     public IndexModel buildIndex() {
         final List<Link> links = new ArrayList<>(asList(entityLinks.linkToCollectionResource(TaskModel.class)

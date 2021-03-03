@@ -89,6 +89,17 @@ public class TaskControllerTest {
     }
 
     @Test
+    public void given_incompleteTaskModel_when_createTask_then_BadRequest() throws Exception {
+        TaskModel taskModel = createIncompleteTaskModel();
+
+        mockMvc.perform(post("/tasks/")
+                .contentType("application/json")
+                .content(serialize(taskModel)))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     @Transactional
     public void given_task_when_updateTask_then_taskIsUpdated() throws Exception {
         Task task = getOneTask();
@@ -182,6 +193,14 @@ public class TaskControllerTest {
                 .repeatType(WEEKLY)
                 .title("Mimacom Challenge")
                 .details("Finish Mimacom Technical Challenge including tests")
+                .date(LocalDateTime.now().plusDays(7).minusHours(1))
+                .build();
+    }
+
+    private TaskModel createIncompleteTaskModel() {
+        return TaskModel.builder()
+                .repeatType(WEEKLY)
+                .title("Mimacom Challenge")
                 .date(LocalDateTime.now().plusDays(7).minusHours(1))
                 .build();
     }

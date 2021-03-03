@@ -7,8 +7,10 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.ExposesResourceFor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -46,13 +48,13 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<TaskModel> update(@RequestBody TaskModel taskModel) {
+    public ResponseEntity<TaskModel> update(@Valid @RequestBody TaskModel taskModel) {
         Task task = service.create(assembler.toEntity(taskModel));
         return ResponseEntity.ok(assembler.toModel(task));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskModel> update(@PathVariable("id") Long id, @RequestBody TaskModel taskModel) {
+    public ResponseEntity<TaskModel> update(@PathVariable("id") Long id, @Valid @RequestBody TaskModel taskModel) {
         Task task = service.update(id, assembler.toEntity(taskModel));
         if(isFinishedRequest(taskModel)) {
             task = service.setAsFinished(id);
