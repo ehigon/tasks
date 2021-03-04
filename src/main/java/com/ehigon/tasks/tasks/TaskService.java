@@ -1,5 +1,6 @@
 package com.ehigon.tasks.tasks;
 
+import com.ehigon.tasks.error.ActiveException;
 import com.ehigon.tasks.error.FinishedException;
 import com.ehigon.tasks.error.NotFoundException;
 import com.ehigon.tasks.finished.Finished;
@@ -52,6 +53,9 @@ public class TaskService {
         Task task = getTaskById(id);
         if(finishedVerifierService.isFinished(task)) {
             throw new FinishedException();
+        }
+        if(task.getDate().isAfter(LocalDateTime.now())){
+            throw new ActiveException();
         }
         Finished finished = finishedRepository.save(Finished.builder()
                 .task(task)

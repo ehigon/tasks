@@ -15,6 +15,7 @@ public class MonthlyTaskFinishedVerifierStrategy extends RepeatTaskFinishedVerif
         return MONTHLY.equals(type);
     }
 
+    @Override
     protected LocalDateTime increment(LocalDateTime date) {
         return date.plusMonths(1);
     }

@@ -15,6 +15,7 @@ public class YearlyTaskFinishedVerifierStrategy extends RepeatTaskFinishedVerifi
         return YEARLY.equals(type);
     }
 
+    @Override
     protected LocalDateTime increment(LocalDateTime date) {
         return date.plusYears(1);
     }

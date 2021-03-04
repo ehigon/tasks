@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/")
 public class IndexController {
+
     private final IndexResourceAssembler indexResourceAssembler;
-    
-    @Autowired
+
     public IndexController(IndexResourceAssembler indexResourceAssembler) {
         this.indexResourceAssembler = indexResourceAssembler;
     }

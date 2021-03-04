@@ -17,8 +17,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static com.ehigon.tasks.tasks.RepeatType.NONE;
-import static com.ehigon.tasks.tasks.RepeatType.WEEKLY;
+import static com.ehigon.tasks.tasks.RepeatType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -147,6 +146,17 @@ public class TaskControllerTest {
     }
 
     @Test
+    public void given_unActiveTask_when_setAsFinished_then_conflict() throws Exception {
+        Task task = createFutureTask("task for the future", "details", YEARLY);
+
+        mockMvc.perform(patch("/tasks/" + task.getId())
+                .contentType("application/json")
+                .content("{\"finished\" : \"true\"}"))
+                .andDo(print())
+                .andExpect(status().isConflict());
+    }
+
+    @Test
     @Transactional
     public void given_task_when_deleteTask_then_taskIsDeleted() throws Exception {
         Task task = getOneTask();
@@ -181,6 +191,16 @@ public class TaskControllerTest {
                 .repeatType(type)
                 .build();
         repository.save(task);
+    }
+
+    private Task createFutureTask(String title, String details, RepeatType type) {
+        Task task = Task.builder()
+                .title(title)
+                .details(details)
+                .date(LocalDateTime.now().plusHours(2L))
+                .repeatType(type)
+                .build();
+        return repository.save(task);
     }
 
     private void wipeTasks() {

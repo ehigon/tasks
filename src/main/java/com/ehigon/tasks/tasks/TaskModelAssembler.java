@@ -31,7 +31,7 @@ public class TaskModelAssembler extends RepresentationModelAssemblerSupport<Task
         taskModel.setFinished(finishedVerifierService.isFinished(entity));
         taskModel.add(
                 linkTo(methodOn(RepeatOptionsController.class).getOptions())
-                        .withRel(relProvider.getCollectionResourceRelFor(TaskModel.class))
+                        .withRel(relProvider.getCollectionResourceRelFor(RepeatOptionsModel.class))
         );
         return taskModel;
     }

@@ -15,6 +15,7 @@ public class DaylyTaskFinishedVerifierStrategy extends RepeatTaskFinishedVerifie
         return DAILY.equals(type);
     }
 
+    @Override
     protected LocalDateTime increment(LocalDateTime date) {
         return date.plusDays(1);
     }
